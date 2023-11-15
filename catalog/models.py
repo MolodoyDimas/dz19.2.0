@@ -12,3 +12,4 @@ class Product(models.Model):
 class Category(models.Model):
     name_category = models.CharField(max_length=100, verbose_name='Наименование')
     description = models.CharField(max_length=200, verbose_name='Описание')
+    created_at = models.CharField(max_length=100, verbose_name='Создан')
