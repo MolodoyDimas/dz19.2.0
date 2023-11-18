@@ -5,14 +5,14 @@ from catalog.models import Product
 def index(request):
     product_list = Product.objects.all()
     context = {
-        'product_list': product_list
+        'product_list': product_list,
+        'title': 'Главная'
     }
     return render(request, 'catalog/index.html', context)
 
 
 def contacts(request):
-    return render(request, 'catalog/contacts.html')
-
-
-def product(request):
-    return render(request, 'catalog/product.html')
+    context = {
+        'title': 'Контакты'
+    }
+    return render(request, 'catalog/contacts.html', context)
