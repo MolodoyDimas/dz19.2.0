@@ -1,5 +1,5 @@
 {% extends 'catalog/base.html' %}
-
+{% load my_tags %}
 {% block content %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">У ДИМАСА</h1>
@@ -11,6 +11,11 @@
     <div class="card mb-4 box-shadow">
         <div class="card-body">
             <h1 class="card-text">{{ object }}</h1>
+        </div>
+        <div class="card md-4 box-shadow">
+            <img class="card-img-top"
+                 src="{{ object.image|mymedia }}"
+                 alt="Card image cap">
         </div>
         <div class="card-body">
             <h5 class="card-title pricing-card-title">Цена: {{ object.purchase_price }} ₽<small
