@@ -1,9 +1,9 @@
 from django.db import models
-
+from django.utils.text import slugify
 
 class Blog(models.Model):
     title = models.CharField(max_length=100, verbose_name='Заголовок')
-    slug = models.CharField(max_length=100, null=True, verbose_name='slug')
+    slug = models.CharField(max_length=100, null=True, blank=True, verbose_name='slug')
     body = models.TextField(verbose_name='Содержание')
     image = models.ImageField(upload_to='image/', verbose_name='Изображение', blank=True, null=True)
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
@@ -17,3 +17,4 @@ class Blog(models.Model):
         verbose_name = 'Материал'
         verbose_name_plural = 'Материалы'
         ordering = ('title',)
+
