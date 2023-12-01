@@ -19,19 +19,22 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="card">
-                        <h2 class="card-title">
-                            Версия
-                        </h2>
-                        <div class="card-body">
-                            {{ formset.management_form }}
-                            {% for form in formset.forms %}
-                                {{ form.as_p }}
-                            {% endfor %}
+                        <div class="card">
+                            <h2 class="card-title">
+                                Версия
+                            </h2>
+                            <div class="card-body">
+                                {{ formset.management_form }}
+                                {% for form in formset.forms %}
+                                    {{ form.as_p }}
+                                    {% if not forloop.last %}
+                                        <hr>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </form>
     </div>
 {% endblock %}
