@@ -142,5 +142,5 @@ LOGOUT_REDIRECT_URL = '/'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'DmitryIsBack@yandex.ru'
-EMAIL_HOST_PASSWORD = 'pzgznabivnzixqew'
+EMAIL_HOST_PASSWORD = 'plwhzghhersartnq'
 EMAIL_USE_SSL = True
