@@ -7,7 +7,7 @@ from django.conf import settings
 from users.forms import UserRegisterForm, UserProfileForm
 from users.models import User
 from django.shortcuts import redirect
-#from django.contrib.auth.views import LoginView as BaseLoginView
+
 
 
 
