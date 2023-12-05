@@ -1,5 +1,5 @@
 from django.db import models
-
+from users.models import User
 
 class Product(models.Model):
     name_product = models.CharField(max_length=100, verbose_name='Наименование')
@@ -9,6 +9,8 @@ class Product(models.Model):
     purchase_price = models.IntegerField(verbose_name='Цена')
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     last_modified_date = models.DateTimeField(auto_now=True, verbose_name='Дата последнего изменения')
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE, verbose_name='Создал')
+
 
     def __str__(self):
         return f'{self.name_product}'
