@@ -8,8 +8,10 @@ from django.http import Http404
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
+
 class ProductListView(ListView):
     model = Product
+
 
 def contacts(request):
     context = {
@@ -22,6 +24,13 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:index')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        return not self.request.user.is_staff
 
 
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -41,10 +50,9 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        if self.object.user == self.request.user or self.object.user.is_staff == True:
-            return self.object
-        else:
-            raise Http404
+        if self.object.user != self.request.user and not self.request.user.is_staff:
+            raise Http404("Вы не являетесь владельцем этого товара")
+        return self.object
 
     def test_func(self):
         _user = self.request.user
