@@ -12,7 +12,7 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('name_product', 'description', 'image', 'category', 'purchase_price',)
+        fields = ('name_product', 'description', 'image', 'category', 'purchase_price','publication' ,)
 
     def clean_name_product(self):
         ban_list = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']

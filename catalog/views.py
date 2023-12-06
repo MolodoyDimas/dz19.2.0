@@ -4,8 +4,9 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from catalog.forms import ProductForm, VersionForm
 from django.forms import inlineformset_factory
+from django.http import Http404
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 class ProductListView(ListView):
     model = Product
@@ -26,6 +27,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog.change_product'
     success_url = reverse_lazy('catalog:index')
 
     def get_context_data(self, **kwargs):
@@ -37,6 +39,11 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             context_data['formset'] = VersionFormset(instance=self.object)
         return context_data
 
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.user != self.request.user:
+            raise Http404
+        return self.object
 
     def form_valid(self, form):
         formset = self.get_context_data()['formset']
@@ -47,6 +54,8 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
         return super().form_valid(form)
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:index')
+    permission_required = 'catalog.delete_product'
