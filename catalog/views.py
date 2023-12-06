@@ -6,7 +6,7 @@ from catalog.forms import ProductForm, VersionForm
 from django.forms import inlineformset_factory
 from django.http import Http404
 
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
 class ProductListView(ListView):
     model = Product
@@ -24,7 +24,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('catalog:index')
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
     permission_required = 'catalog.change_product'
@@ -41,9 +41,25 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        if self.object.user != self.request.user:
+        if self.object.user == self.request.user or self.object.user.is_staff == True:
+            return self.object
+        else:
             raise Http404
-        return self.object
+
+    def test_func(self):
+        _user = self.request.user
+        _instance: Product = self.get_object()
+        custom_perms: tuple = (
+            'catalog_app.set_publication',
+            'catalog_app.set_category',
+            'catalog_app.set_description',
+        )
+
+        if _user == _instance.user:
+            return True
+        elif _user.groups.filter(name='moder') and _user.has_perms(custom_perms):
+            return True
+        return self.handle_no_permission()
 
     def form_valid(self, form):
         formset = self.get_context_data()['formset']

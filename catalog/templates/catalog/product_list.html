@@ -28,12 +28,13 @@
                     <li class="text-body-secondary fw-light">Дата поступления: {{object.creation_date}}</li>
                 </ul>
                 <a type="button" class="w-300 btn btn-lg btn-outline-primary">Купить</a>
-
         </div>
-        <a href="{% url 'catalog:product_update' object.pk %}" type="button"
-                               class="btn btm-sm btn-light">Редактировать</a>
-        <a href="{% url 'catalog:product_delete' object.pk %}" type="button"
-                               class="btn btm-sm btn-danger">Удалить</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'catalog:product_update' object.pk %}" type="button"
+                                   class="btn btm-sm btn-light">Редактировать</a>
+            <a href="{% url 'catalog:product_delete' object.pk %}" type="button"
+                                   class="btn btm-sm btn-danger">Удалить</a>
+        {% endif %}
     </div>
 </div>
 {% endfor %}
