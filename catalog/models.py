@@ -10,6 +10,7 @@ class Product(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     last_modified_date = models.DateTimeField(auto_now=True, verbose_name='Дата последнего изменения')
     user = models.ForeignKey(User, default=1, on_delete=models.CASCADE, verbose_name='Создал')
+    publication = models.BooleanField(default=False, verbose_name="Опубликовано")
 
 
     def __str__(self):
